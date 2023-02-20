@@ -1,32 +1,112 @@
-plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.8'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-}
+//plugins {
+//	id 'java'
+//	id 'org.springframework.boot' version '2.7.8'
+//	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+//}
+//
+//group = 'com.example'
+//version = '0.0.1-SNAPSHOT'
+//sourceCompatibility = '17'
+//
+//configurations {
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
+//}
+//
+//repositories {
+//	mavenCentral()
+//}
+//
+//dependencies {
+//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	compileOnly 'org.projectlombok:lombok'
+//	runtimeOnly 'com.h2database:h2'
+//	annotationProcessor 'org.projectlombok:lombok'
+//	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//}
+//
+//tasks.named('test') {
+//	useJUnitPlatform()
+//}
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+/*
+ * buildscript : Gradle이 빌드되기전에 실행되는 설정
+ * allprojects : 현재의 root 프로젝트와 앞으로 추가될 서브 모듈에 대한 설정.
+ * subprojects : 전체 공통으로 사용 될 서브 모듈에 해당되는 설정.
+ */
+buildscript {
+	ext {
+		springBootVersion = '2.7.8'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath ("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
 	}
 }
 
-repositories {
-	mavenCentral()
+allprojects {
 }
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+subprojects {
+
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	group = 'com.cosmax.producer'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '17'
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+		annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+//		testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		compileOnly 'org.projectlombok:lombok'
+		runtimeOnly 'com.h2database:h2'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+project(':common') {
+	bootJar { enabled = false } // core 은 bootJar 로 패키징 할 필요 없음
+	jar { enabled = true }
+
+	dependencies {
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
+project(':api') {
+	bootJar { enabled = true }
+	jar { enabled = true }
+
+	dependencies {
+		implementation project(':common')
+	}
+
+	test {
+		exclude 'com/example**'
+		useJUnitPlatform()
+	}
 }
