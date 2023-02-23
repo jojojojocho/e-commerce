@@ -1,18 +1,23 @@
 package com.example.domain;
 
+import com.example.dto.ProductReqDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Product {
 
     //제품 pk
@@ -63,6 +68,18 @@ public class Product {
 //    @OneToMany(mappedBy = "product")
 //    private List<ProductReview> productReviews;
 
+
+    public void updateProduct(ProductReqDto dto){
+        this.availability = dto.isAvailability();
+        this.color = dto.getColor();
+        this.brandName = dto.getBrandName();
+        this.category = dto.getCategory();
+        this.description = dto.getDescription();
+        this.modelNumber = dto.getModelNumber();
+        this.price = dto.getPrice();
+        this.productName = dto.getProductName();
+        this.warranty = dto.getWarranty();
+    }
 
 
 

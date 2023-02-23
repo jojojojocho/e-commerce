@@ -8,7 +8,7 @@ public interface ProductService<T,R> {
 
     List<R> readAllProduct();
 
-    String updateProduct(T reqDto);
+    String updateProduct(Long id, T reqDto);
 
     String deleteProduct(Long id);
 }

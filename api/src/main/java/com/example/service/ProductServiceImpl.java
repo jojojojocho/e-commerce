@@ -21,8 +21,7 @@ public class ProductServiceImpl implements ProductService<ProductReqDto, Product
     @Override
     public String createProduct(ProductReqDto productReqDto) {
         try {
-            Product product = new Product();
-            mapper.updateProductFromDto(productReqDto, product);
+            Product product = mapper.toEntity(productReqDto);
             productRepository.save(product);
             return "저장 성공!";
         } catch (Exception e) {
@@ -43,11 +42,13 @@ public class ProductServiceImpl implements ProductService<ProductReqDto, Product
     }
 
     @Override
-    public String updateProduct(ProductReqDto dto) {
-        Product product = productRepository.findById(dto.getId())
+    @Transactional
+    public String updateProduct(Long id, ProductReqDto dto) {
+        Product product = productRepository.findById(id)
                                            .orElseGet(null);
         if (product != null) {
-            mapper.updateProductFromDto(dto, product);
+            product.updateProduct(dto);
+            productRepository.save(product);
             return "수정 성공!";
         }
         return "대상이 없습니다.";
