@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ public class ProductControllerImpl implements ProductController<ProductReqDto, P
     // create
     @PostMapping("/")
     @Override
-    public String registerProduct(ProductReqDto dto) {
+    public String registerProduct(@RequestBody ProductReqDto dto) {
         return productService.createProduct(dto);
     }
 
@@ -38,8 +39,8 @@ public class ProductControllerImpl implements ProductController<ProductReqDto, P
     // update
     @PutMapping("/{id}")
     @Override
-    public String modifyProduct(ProductReqDto dto) {
-        return productService.updateProduct(dto);
+    public String modifyProduct(@PathVariable Long id, @RequestBody ProductReqDto dto) {
+        return productService.updateProduct(id, dto);
     }
 
     // delete
