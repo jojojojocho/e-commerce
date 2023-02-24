@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest
-@Rollback(value = false)
+@Rollback(value = true)
 @Transactional
 class ProductServiceTest {
 
@@ -81,7 +81,10 @@ class ProductServiceTest {
         System.out.println("str = " + str);
     }
 
+    @DisplayName("제품 삭제")
     @Test
     void deleteProduct() {
+        String result = productService.deleteProduct(3L);
+        Assertions.assertThat(result).isEqualTo("삭제 성공!");
     }
 }
