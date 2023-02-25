@@ -17,55 +17,56 @@ import org.springframework.test.annotation.Rollback;
 
 
 @SpringBootTest
-@Rollback(value = true)
 @Transactional
 class ProductRepositoryTest {
 
     @Autowired
     private ProductRepository productRepository;
 
-    private ProductReqDto productReqDto;
+    private Product product;
 
-    @Autowired
-    ProductMapper productMapper;
+    //    @Autowired
+    ProductMapper productMapper = new ProductMapperImpl();
 
 
     @BeforeEach
     void setup() {
-        this.productMapper = new ProductMapperImpl();
-        this.productReqDto = ProductReqDto.builder()
-                                          .availability(true)
-                                          .productName("i-phone 15")
-                                          .price(500000.00)
-                                          .color("black")
-                                          .brandName("apple")
-                                          .category("electronic")
-                                          .description("아이폰")
-                                          .modelNumber("153512351235")
-                                          .warranty("1year")
-                                          .build();
+//        this.productMapper = new ProductMapperImpl();
+        this.product = Product.builder()
+                                    .availability(true)
+                                    .productName("i-phone 15")
+                                    .price(500000.00)
+                                    .color("black")
+                                    .brandName("apple")
+                                    .category("electronic")
+                                    .description("아이폰")
+                                    .modelNumber("153512351235")
+                                    .warranty("1year")
+                                    .build();
+        productRepository.save(product);
     }
-
 
 //    @Test
 //    @DisplayName("제품 저장")
 //    public void saveProduct() {
+//        // given
 //        Product product = productMapper.toEntity(productReqDto);
+//        // when
 //        Product save = productRepository.save(product);
+//        // then
 ////        System.out.println(save.toString());
-//        Assertions.assertThat(save.getProductName()).isEqualTo("i-phone 14");
-//    }
-//
-//    @Test
-//    @DisplayName("모든 제품 조회")
-//    public void readProduct() {
-//        List<Product> all = productRepository.findAll();
-//
-////        System.out.println(all.toString());
-//        Assertions.assertThat(all.size()).isEqualTo(4);
+//        Assertions.assertThat(save.getProductName()).isEqualTo("i-phone 15");
 //    }
 
+    @Test
+    @DisplayName("모든 제품 조회")
+    public void readProduct() {
+        List<Product> all = productRepository.findAll();
 
+//        System.out.println(all.toString());
+        Assertions.assertThat(all.size())
+                  .isEqualTo(1);
+    }
 
 
 }
