@@ -16,7 +16,7 @@ import lombok.ToString;
 @Getter
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "ofCreate")
 @ToString
 public class Product {
 
