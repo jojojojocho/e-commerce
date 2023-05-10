@@ -1,8 +1,5 @@
 package com.example.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.example.domain.Product;
 import com.example.dto.ProductReqDto;
 import com.example.dto.ProductResDto;
 import com.example.mapper.ProductMapper;
@@ -14,7 +11,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -65,7 +61,7 @@ class ProductServiceTest {
     @Test
     void readAllProduct() {
 
-        List<ProductResDto> productResDtos = productService.readAllProduct();
+        List<ProductResDto> productResDtos = productService.readAllProducts();
 
         System.out.println("----------------------------------------------");
         productResDtos.forEach(productResDto -> System.out.println(productResDto.toString()));

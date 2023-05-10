@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProductControllerImpl implements ProductController<ProductReqDto, ProductResDto> {
 
-    private final ProductService productService;
+    private final ProductService<ProductReqDto, ProductResDto> productService;
 
     // create
     @PostMapping("/")
@@ -28,12 +28,19 @@ public class ProductControllerImpl implements ProductController<ProductReqDto, P
         return productService.createProduct(dto);
     }
 
-    // read
+    // readAll
     @GetMapping("/")
     @Override
-    public List<ProductResDto> inquireProduct() {
-        return productService.readAllProduct();
+    public List<ProductResDto> readAllProducts() {
+        return productService.readAllProducts();
+    }
 
+    // readone
+    @GetMapping("/{id}")
+    @Override
+    public ProductResDto readProduct(@PathVariable Long id) {
+
+        return productService.readProduct(id);
     }
 
     // update

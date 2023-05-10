@@ -6,6 +6,7 @@ import com.example.dto.ProductResDto;
 import com.example.mapper.ProductMapper;
 import com.example.repository.ProductRepository;
 import java.util.List;
+import java.util.NoSuchElementException;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class ProductServiceImpl implements ProductService<ProductReqDto, Product
     }
 
     @Override
-    public List<ProductResDto> readAllProduct() {
+    public List<ProductResDto> readAllProducts() {
         List<Product> products = productRepository.findAll();
         List<ProductResDto> productResDtos = products.stream()
                                                      .map(product -> mapper.toDto(product))
@@ -40,6 +41,17 @@ public class ProductServiceImpl implements ProductService<ProductReqDto, Product
         return productResDtos;
 
     }
+
+    @Override
+    public ProductResDto readProduct(Long id) {
+        Product product = productRepository.findById(id)
+                                           .orElseThrow(() -> new NoSuchElementException(
+                                               "해당 ID에 해당하는 제품을 찾을 수 없습니다."));
+
+        ProductResDto productResDto = mapper.toDto(product);
+        return productResDto;
+    }
+
 
     @Override
     @Transactional

@@ -9,9 +9,13 @@ public interface ProductController<T,R> {
 
     String registerProduct(@RequestBody T dto);
 
-    List<R> inquireProduct();
+    //readAll
+    List<R> readAllProducts();
 
-    String modifyProduct(@PathVariable Long id, @RequestBody ProductReqDto dto);
+    //readOne
+    R readProduct(Long id);
+
+    String modifyProduct(@PathVariable Long id, @RequestBody T dto);
 
     String deleteProduct(@PathVariable Long id);
 
